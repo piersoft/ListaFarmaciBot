@@ -1,6 +1,6 @@
 <?php
 /**
-* Telegram Bot example for Italian Museums of DBUnico Mibact Lic. CC-BY
+* Telegram Bot example for Lista Farmaci AIFA
 * @author Francesco Piero Paolicelli @piersoft
 */
 //include("settings_t.php");
@@ -41,6 +41,9 @@ function start($telegram,$update)
 	$today = date("Y-m-d H:i:s");
 
 	if ($text == "/start" || $text == "Informazioni") {
+	//	$img = curl_file_create('aifa.png','image/png');
+	//	$contentp = array('chat_id' => $chat_id, 'photo' => $img);
+	//	$telegram->sendPhoto($contentp);
 		$reply = "Benvenuto. Per ricercare uno Farmaco censito dalla Agenzia Italiana del Farmaco (AIFA), clicca su ClasseA, ClasseC o ClasseH per avere le istruzioni. Verrà interrogato il DataBase openData utilizzabile con licenza CC-BY presente su http://www.agenziafarmaco.gov.it/it/content/dati-sulle-liste-dei-farmaci-open-data . In qualsiasi momento scrivendo /start ti ripeterò questo messaggio di benvenuto.\nQuesto bot, non ufficiale e non collegato con l' AIFA, è stato realizzato da @piersoft.";
 		$content = array('chat_id' => $chat_id, 'text' => $reply,'disable_web_page_preview'=>true);
 		$telegram->sendMessage($content);
@@ -83,29 +86,30 @@ exit;
 //elseif($text !=null)
 
 		elseif(strpos($text,'/') === false){
-			$img = curl_file_create('aifa.png','image/png');
-			$contentp = array('chat_id' => $chat_id, 'photo' => $img);
-			$telegram->sendPhoto($contentp);
+		//	$img = curl_file_create('aifa.png','image/png');
+		//	$contentp = array('chat_id' => $chat_id, 'photo' => $img);
+		//	$telegram->sendPhoto($contentp);
 			if(strpos($text,'a?') !== false){
-				$text=str_replace("a?","",$text);
-				if ($text==""){
+			$text=str_replace("a?","",$text);
+			if ($text==""){
 							$location="Inserire almeno una parola";
 							$content = array('chat_id' => $chat_id, 'text' => $location,'disable_web_page_preview'=>true);
 							$telegram->sendMessage($content);
-						}
-				$location="Sto cercando i farmaci di Classe A con denominazione: ".$text;
-				$content = array('chat_id' => $chat_id, 'text' => $location,'disable_web_page_preview'=>true);
-				$telegram->sendMessage($content);
-				$text=str_replace(" ","%20",$text);
+							exit;
+				}
+			$location="Sto cercando i farmaci di Classe A con denominazione: ".$text;
+			$content = array('chat_id' => $chat_id, 'text' => $location,'disable_web_page_preview'=>true);
+			$telegram->sendMessage($content);
+			$text=str_replace(" ","%20",$text);
 			//	$text=strtoupper($text);
 			$inizio=2;
 			$homepage ="";
 			$text=strtoupper($text);
-			  $urlgd  ="https://spreadsheets.google.com/tq?tqx=out:csv&tq=SELECT%20%2A%20WHERE%20B%20LIKE%20%27%25";
-			  $urlgd .=$text;
-			  $urlgd .="%25%27&key=18EDVuGRwVckXvrxXp1RvTXuoNDyIEuwfi2rWaJEvcVA&gid=504724563";
-				sleep (1);
-				$csv = array_map('str_getcsv',file($urlgd));
+		  $urlgd  ="https://spreadsheets.google.com/tq?tqx=out:csv&tq=SELECT%20%2A%20WHERE%20B%20LIKE%20%27%25";
+		  $urlgd .=$text;
+		  $urlgd .="%25%27&key=18EDVuGRwVckXvrxXp1RvTXuoNDyIEuwfi2rWaJEvcVA&gid=504724563";
+			sleep (1);
+			$csv = array_map('str_getcsv',file($urlgd));
 			//var_dump($csv[1][0]);
 				$count = 0;
 				foreach($csv as $data=>$csv1){
@@ -137,6 +141,7 @@ exit;
 							$location="Inserire almeno una parola";
 							$content = array('chat_id' => $chat_id, 'text' => $location,'disable_web_page_preview'=>true);
 							$telegram->sendMessage($content);
+							exit;
 						}
 				$location="Sto cercando i farmaci di Classe A con principio attivo: ".$text;
 			  $content = array('chat_id' => $chat_id, 'text' => $location,'disable_web_page_preview'=>true);
@@ -181,6 +186,7 @@ $csv[$i][3]=str_replace(".",",",$csv[$i][3]);
 							$location="Inserire almeno una parola";
 							$content = array('chat_id' => $chat_id, 'text' => $location,'disable_web_page_preview'=>true);
 							$telegram->sendMessage($content);
+							exit;
 						}
 				$location="Sto cercando i farmaci di Classe C con denominazione: ".$text;
 			  $content = array('chat_id' => $chat_id, 'text' => $location,'disable_web_page_preview'=>true);
@@ -225,6 +231,7 @@ $csv[$i][8]=str_replace(".",",",$csv[$i][8]);
 							$location="Inserire almeno una parola";
 							$content = array('chat_id' => $chat_id, 'text' => $location,'disable_web_page_preview'=>true);
 							$telegram->sendMessage($content);
+							exit;
 						}
 				$location="Sto cercando i farmaci di Classe C con principio attivo: ".$text;
 			  $content = array('chat_id' => $chat_id, 'text' => $location,'disable_web_page_preview'=>true);
@@ -269,6 +276,7 @@ $csv[$i][8]=str_replace(".",",",$csv[$i][8]);
 							$location="Inserire almeno una parola";
 							$content = array('chat_id' => $chat_id, 'text' => $location,'disable_web_page_preview'=>true);
 							$telegram->sendMessage($content);
+							exit;
 						}
 				$location="Sto cercando i farmaci di Classe H con denominazione: ".$text;
 			  $content = array('chat_id' => $chat_id, 'text' => $location,'disable_web_page_preview'=>true);
@@ -313,6 +321,7 @@ $csv[$i][3]=str_replace(".",",",$csv[$i][3]);
 								$location="Inserire almeno una parola";
 								$content = array('chat_id' => $chat_id, 'text' => $location,'disable_web_page_preview'=>true);
 								$telegram->sendMessage($content);
+								exit;
 							}
 					$location="Sto cercando i farmaci di Classe H con principio attivo: ".$text;
 				  $content = array('chat_id' => $chat_id, 'text' => $location,'disable_web_page_preview'=>true);
