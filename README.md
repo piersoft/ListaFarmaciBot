@@ -1,6 +1,6 @@
 
 Use:
-Send your position, digit a Postal Code or digit a word for search into Last Name of Apulian's Doctors. 
+Digit a? or c? or h? for searching  
 Lic. MIT @piersoft
 
 
@@ -13,7 +13,6 @@ php start.php 'getupdates' to run getupdates.php
 After setup webhook is possible to use telegram managed by webhost
 
 To use the application use "start.php getupdates" for manual execution. "start.php sethook" for Telegram webhook execution.
-
 
 Every night execute update.php
 
